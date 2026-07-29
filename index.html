@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  
+  <title>Shop Share Anywhere | The Western Super App</title>
+  <meta name="description" content="Shop Share Anywhere – the Western super app for AI-powered deals, Smart Basket, group carts, prediction markets & social shopping. Shop smarter with Grok." />
+  <meta name="theme-color" content="#0a0a0a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="mobile-web-app-capable" content="yes" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Shop Share Anywhere | The Western Super App" />
+  <meta property="og:description" content="Shop Share Anywhere – the Western super app for AI-powered deals, Smart Basket, group carts, prediction markets & social shopping. Shop smarter with Grok." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.shopshareanywhere.com" />
+
+  <style>
+    :root {
+      --bg: #050505;
+      --frame-bg: #0a0a0a;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      background: var(--bg);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    /* ===== MOBILE: Full screen ===== */
+    #container {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      height: 100dvh;
+      background: var(--frame-bg);
+      overflow: hidden;
+    }
+
+    #app-frame {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: var(--frame-bg);
+      display: block;
+    }
+
+    /* Loading */
+    #loader {
+      position: absolute;
+      inset: 0;
+      background: var(--frame-bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 30;
+      transition: opacity 0.4s ease, visibility 0.4s ease;
+    }
+
+    #loader.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .spinner {
+      width: 38px;
+      height: 38px;
+      border: 3px solid rgba(255,255,255,0.12);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      margin-bottom: 14px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .loader-text {
+      color: rgba(255,255,255,0.6);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+    }
+
+    /* Safe areas */
+    @supports (padding: max(0px)) {
+      #container {
+        padding-top: env(safe-area-inset-top);
+        padding-right: env(safe-area-inset-right);
+        padding-bottom: env(safe-area-inset-bottom);
+        padding-left: env(safe-area-inset-left);
+      }
+    }
+
+    /* ===== DESKTOP: Centered phone frame (1080×1320 feel) ===== */
+    @media (min-width: 900px) {
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: 
+          radial-gradient(ellipse at center, #111 0%, #050505 70%);
+      }
+
+      #container {
+        position: relative;
+        width: min(420px, 92vw);
+        height: min(910px, 94vh);
+        max-width: 420px;
+        border-radius: 36px;
+        box-shadow: 
+          0 0 0 10px #1a1a1a,
+          0 0 0 12px #333,
+          0 30px 80px rgba(0,0,0,0.7);
+        overflow: hidden;
+        padding: 0;
+      }
+
+      /* subtle top speaker / camera area */
+      #container::before {
+        content: "";
+        position: absolute;
+        top: 12px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90px;
+        height: 22px;
+        background: #111;
+        border-radius: 20px;
+        z-index: 40;
+        pointer-events: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <div id="loader">
+      <div class="spinner"></div>
+      <div class="loader-text">Shop Share Anywhere</div>
+    </div>
+
+    <iframe
+      id="app-frame"
+      src="https://bluaresh.appbuild.io/#~zgv2awnlx3v1awq9d2viyxbwltm4bw83bnvtdgjv"
+      allow="camera; microphone; geolocation; clipboard-read; clipboard-write; fullscreen; accelerometer; gyroscope"
+      allowfullscreen
+      loading="eager"
+    ></iframe>
+  </div>
+
+  <script>
+    const loader = document.getElementById('loader');
+    const frame  = document.getElementById('app-frame');
+
+    function hideLoader() {
+      loader.classList.add('hidden');
+    }
+
+    frame.addEventListener('load', () => {
+      setTimeout(hideLoader, 220);
+    });
+
+    setTimeout(hideLoader, 6500);
+
+    // Mobile overscroll prevention
+    document.addEventListener('touchmove', function(e) {
+      if (e.touches.length > 1) return;
+      e.preventDefault();
+    }, { passive: false });
+
+    // Real height fix for mobile browsers
+    function setRealHeight() {
+      const h = window.innerHeight;
+      document.body.style.height = h + 'px';
+      document.getElementById('container').style.height = h + 'px';
+    }
+
+    if (window.innerWidth < 900) {
+      setRealHeight();
+      window.addEventListener('resize', setRealHeight);
+      window.addEventListener('orientationchange', () => setTimeout(setRealHeight, 120));
+    }
+  </script>
+</body>
+</html>
